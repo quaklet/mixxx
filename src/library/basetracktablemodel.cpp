@@ -679,8 +679,8 @@ QVariant BaseTrackTableModel::roleValue(
                 // Use localized date/time format without text: "5/20/98 03:40 AM"
                 return mixxx::displayLocalDateTime(dt);
             }
-            // For Date Added, use just the date: "5/20/98"
-            return dt.date();
+            // For Date Added, use just the date: "1998-05-20"
+            return mixxx::displayISODate(dt);
         }
         case ColumnCache::COLUMN_LIBRARYTABLE_LAST_PLAYED_AT: {
             QDateTime lastPlayedAt;
@@ -706,7 +706,7 @@ QVariant BaseTrackTableModel::roleValue(
             if (role == Qt::ToolTipRole || role == kDataExportRole) {
                 return dt;
             }
-            return dt.date();
+            return mixxx::displayISODate(dt);
         }
         case ColumnCache::COLUMN_LIBRARYTABLE_BPM: {
             mixxx::Bpm bpm;

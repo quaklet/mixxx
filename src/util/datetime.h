@@ -35,4 +35,18 @@ inline QString displayLocalDateTime(
     return QLocale().toString(dt, QLocale::ShortFormat);
 }
 
+/// Format a QDateTime for display to the user using the
+/// ISO 8601 date format.
+inline QString displayISODate(
+        const QDateTime& dt) {
+    return QLocale().toString(dt, "yyyy-MM-dd");
+}
+
+/// Format a QDateTime for display to the user using the
+/// ISO 8601 date-time format.
+inline QString displayISODateTime(
+        const QDateTime& dt) {
+    return dt.toString(Qt::ISODate);
+}
+
 } // namespace mixxx
