@@ -111,7 +111,7 @@ case "$1" in
 
         if [ -n "${GITHUB_ENV}" ]; then
             echo_exported_variables >> "${GITHUB_ENV}"
-        elif [ "$1" != "--profile" ]; then
+        elif [ "$2" != "--profile" ]; then
             echo ""
             echo "Exported environment variables:"
             echo_exported_variables
