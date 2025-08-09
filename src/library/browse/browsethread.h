@@ -34,6 +34,9 @@ class BrowseThread : public QThread {
     void run();
     static BrowseThreadPointer getInstanceRef();
 
+    static constexpr bool kApplyLibraryIsodateDefault = false;
+    static void setApplyLibraryIsodate(bool apply);
+
   signals:
     void rowsAppended(const QList<QList<QStandardItem*>>&, BrowseTableModel*);
     void clearModel(BrowseTableModel*);
@@ -53,4 +56,6 @@ class BrowseThread : public QThread {
     BrowseTableModel* m_model_observer;
 
     static QWeakPointer<BrowseThread> m_weakInstanceRef;
+
+    static bool s_bApplyLibraryIsodate;
 };

@@ -114,6 +114,13 @@ void BaseTrackTableModel::setApplyPlayedTrackColor(bool apply) {
     s_bApplyPlayedTrackColor = apply;
 }
 
+bool BaseTrackTableModel::s_bApplyLibraryIsodate =
+        kApplyLibraryIsodateDefault;
+
+void BaseTrackTableModel::setApplyLibraryIsodate(bool apply) {
+    s_bApplyLibraryIsodate = apply;
+}
+
 BaseTrackTableModel::BaseTrackTableModel(
         QObject* parent,
         TrackCollectionManager* pTrackCollectionManager,
@@ -679,8 +686,12 @@ QVariant BaseTrackTableModel::roleValue(
                 // Use localized date/time format without text: "5/20/98 03:40 AM"
                 return mixxx::displayLocalDateTime(dt);
             }
-            // For Date Added, use just the date: "1998-05-20"
-            return mixxx::displayISODate(dt);
+            if (s_bApplyLibraryIsodate) {
+                // For Date Added, use just the date: "1998-05-20"
+                return mixxx::displayISODate(dt);
+            }
+            // For Date Added, use just the date: "5/20/98"
+            return dt.date();
         }
         case ColumnCache::COLUMN_LIBRARYTABLE_LAST_PLAYED_AT: {
             QDateTime lastPlayedAt;
@@ -706,7 +717,10 @@ QVariant BaseTrackTableModel::roleValue(
             if (role == Qt::ToolTipRole || role == kDataExportRole) {
                 return dt;
             }
-            return mixxx::displayISODate(dt);
+            if (s_bApplyLibraryIsodate) {
+                return mixxx::displayISODate(dt);
+            }
+            return dt.date();
         }
         case ColumnCache::COLUMN_LIBRARYTABLE_BPM: {
             mixxx::Bpm bpm;

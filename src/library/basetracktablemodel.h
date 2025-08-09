@@ -132,6 +132,9 @@ class BaseTrackTableModel : public QAbstractTableModel, public TrackModel {
     static constexpr bool kApplyPlayedTrackColorDefault = true;
     static void setApplyPlayedTrackColor(bool apply);
 
+    static constexpr bool kApplyLibraryIsodateDefault = false;
+    static void setApplyLibraryIsodate(bool apply);
+
   protected:
     // Build a map from the column names to their indices
     // used by fieldIndex().
@@ -307,4 +310,5 @@ class BaseTrackTableModel : public QAbstractTableModel, public TrackModel {
     static std::optional<ColorPalette> s_keyColorPalette;
 
     static bool s_bApplyPlayedTrackColor;
+    static bool s_bApplyLibraryIsodate;
 };

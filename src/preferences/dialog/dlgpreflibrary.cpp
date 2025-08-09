@@ -13,6 +13,7 @@
 #include "control/controlproxy.h"
 #include "defs_urls.h"
 #include "library/basetracktablemodel.h"
+#include "library/browse/browsethread.h"
 #include "library/dlgtrackmetadataexport.h"
 #include "library/library.h"
 #include "library/library_prefs.h"
@@ -253,6 +254,8 @@ void DlgPrefLibrary::slotResetToDefaults() {
     spinbox_bpm_precision->setValue(BaseTrackTableModel::kBpmColumnPrecisionDefault);
     checkbox_played_track_color->setChecked(
             BaseTrackTableModel::kApplyPlayedTrackColorDefault);
+    checkbox_library_isodate->setChecked(
+            BaseTrackTableModel::kApplyLibraryIsodateDefault);
 
     radioButton_cover_art_fetcher_medium->setChecked(true);
 
@@ -390,6 +393,12 @@ void DlgPrefLibrary::slotUpdate() {
                     mixxx::library::prefs::kApplyPlayedTrackColorConfigKey,
                     BaseTrackTableModel::kApplyPlayedTrackColorDefault);
     checkbox_played_track_color->setChecked(applyPlayedTrackColor);
+
+    const auto applyLibraryIsodate =
+            m_pConfig->getValue(
+                    mixxx::library::prefs::kApplyLibraryIsodateConfigKey,
+                    BaseTrackTableModel::kApplyLibraryIsodateDefault);
+    checkbox_library_isodate->setChecked(applyLibraryIsodate);
 }
 
 void DlgPrefLibrary::slotCancel() {
@@ -603,6 +612,14 @@ void DlgPrefLibrary::slotApply() {
     m_pConfig->set(
             mixxx::library::prefs::kApplyPlayedTrackColorConfigKey,
             ConfigValue(checkbox_played_track_color->isChecked()));
+
+    BaseTrackTableModel::setApplyLibraryIsodate(
+            checkbox_library_isodate->isChecked());
+    BrowseThread::setApplyLibraryIsodate(
+            checkbox_library_isodate->isChecked());
+    m_pConfig->set(
+            mixxx::library::prefs::kApplyLibraryIsodateConfigKey,
+            ConfigValue(checkbox_library_isodate->isChecked()));
 
     // TODO(rryan): Don't save here.
     m_pConfig->save();

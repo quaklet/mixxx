@@ -90,6 +90,14 @@ void BrowseThread::run() {
     m_mutex.unlock();
 }
 
+// static
+bool BrowseThread::s_bApplyLibraryIsodate =
+        kApplyLibraryIsodateDefault;
+
+void BrowseThread::setApplyLibraryIsodate(bool apply) {
+    s_bApplyLibraryIsodate = apply;
+}
+
 namespace {
 
 class YearItem: public QStandardItem {
@@ -284,7 +292,9 @@ void BrowseThread::populateModel() {
             const auto fileLastModified =
                     fileAccess.info().lastModified();
             item = new QStandardItem(
-                    mixxx::displayISODateTime(fileLastModified));
+                    s_bApplyLibraryIsodate
+                            ? mixxx::displayISODateTime(fileLastModified)
+                            : mixxx::displayLocalDateTime(fileLastModified));
             item->setToolTip(item->text());
             item->setData(fileLastModified, Qt::UserRole);
             row_data.insert(COLUMN_FILE_MODIFIED_TIME, item);
@@ -292,7 +302,9 @@ void BrowseThread::populateModel() {
             const auto fileCreated =
                     fileAccess.info().birthTime();
             item = new QStandardItem(
-                    mixxx::displayISODateTime(fileCreated));
+                    s_bApplyLibraryIsodate
+                            ? mixxx::displayISODateTime(fileCreated)
+                            : mixxx::displayLocalDateTime(fileCreated));
             item->setToolTip(item->text());
             item->setData(fileCreated, Qt::UserRole);
             row_data.insert(COLUMN_FILE_CREATION_TIME, item);

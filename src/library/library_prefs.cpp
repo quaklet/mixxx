@@ -78,6 +78,11 @@ const ConfigKey mixxx::library::prefs::kApplyPlayedTrackColorConfigKey =
                 mixxx::library::prefs::kConfigGroup,
                 QStringLiteral("ApplyPlayedTrackColor")};
 
+const ConfigKey mixxx::library::prefs::kApplyLibraryIsodateConfigKey =
+        ConfigKey{
+                mixxx::library::prefs::kConfigGroup,
+                QStringLiteral("ApplyLibraryIsodate")};
+
 // The "Export" suffix in the key is kept for backward compatibility
 const ConfigKey mixxx::library::prefs::kSyncTrackMetadataConfigKey =
         ConfigKey{
