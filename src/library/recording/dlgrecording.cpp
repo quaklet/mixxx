@@ -112,7 +112,7 @@ void DlgRecording::setFocus() {
 void DlgRecording::refreshBrowseModel() {
     saveCurrentViewState();
     QString recordingDir = m_pRecordingManager->getRecordingDir();
-    m_browseModel.setPath(mixxx::FileAccess(mixxx::FileInfo(recordingDir)));
+    m_browseModel.setPath(mixxx::FileAccess(mixxx::FileInfo(recordingDir)), false);
 }
 
 void DlgRecording::onSearch(const QString& text) {

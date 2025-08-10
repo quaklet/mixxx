@@ -44,6 +44,7 @@ class BrowseFeature : public LibraryFeature {
     void slotRemoveQuickLink();
     void slotAddToLibrary();
     void slotRefreshDirectoryTree();
+    void slotScanSubdirectories();
     void activate() override;
     void activateChild(const QModelIndex& index) override;
     void onRightClickChild(const QPoint& globalPos, const QModelIndex& index) override;
@@ -75,6 +76,7 @@ class BrowseFeature : public LibraryFeature {
     QAction* m_pRemoveQuickLinkAction;
     QAction* m_pAddtoLibraryAction;
     QAction* m_pRefreshDirTreeAction;
+    QAction* m_pScanSubdirsAction;
 
     // Caution: Make sure this is reset whenever the library tree is updated,
     // so that the internalPointer() does not become dangling
@@ -82,4 +84,6 @@ class BrowseFeature : public LibraryFeature {
     TreeItem* m_pQuickLinkItem;
     QStringList m_quickLinkList;
     QPointer<WLibrarySidebar> m_pSidebarWidget;
+
+    bool m_scanRecursive;
 };

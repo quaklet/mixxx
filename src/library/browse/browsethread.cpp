@@ -63,9 +63,10 @@ BrowseThreadPointer BrowseThread::getInstanceRef() {
     return strong;
 }
 
-void BrowseThread::executePopulation(mixxx::FileAccess path, BrowseTableModel* client) {
+void BrowseThread::executePopulation(mixxx::FileAccess path, BrowseTableModel* client, bool recursive) {
     m_path_mutex.lock();
     m_path = std::move(path);
+    m_recursive = recursive;
     m_model_observer = client;
     m_path_mutex.unlock();
     m_locationUpdated.wakeAll();
@@ -135,10 +136,11 @@ void BrowseThread::populateModel() {
     // Refresh the name filters in case we loaded new SoundSource plugins.
     const QStringList nameFilters = SoundSourceProxy::getSupportedFileNamePatterns();
 
+    const auto iterFlags = m_recursive ? QDirIterator::Subdirectories : QDirIterator::NoIteratorFlags;
     QDirIterator fileIt(thisPath.info().location(),
             nameFilters,
             QDir::Files | QDir::NoDotAndDotDot,
-            QDirIterator::Subdirectories);
+            iterFlags);
 
     // remove all rows
     // This is a blocking operation

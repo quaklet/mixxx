@@ -30,7 +30,7 @@ class BrowseThread : public QThread {
     Q_OBJECT
   public:
     virtual ~BrowseThread();
-    void executePopulation(mixxx::FileAccess path, BrowseTableModel* client);
+    void executePopulation(mixxx::FileAccess path, BrowseTableModel* client, bool recursive);
     void run();
     static BrowseThreadPointer getInstanceRef();
 
@@ -54,6 +54,8 @@ class BrowseThread : public QThread {
     QMutex m_path_mutex;
     mixxx::FileAccess m_path;
     BrowseTableModel* m_model_observer;
+
+    bool m_recursive;
 
     static QWeakPointer<BrowseThread> m_weakInstanceRef;
 

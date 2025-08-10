@@ -201,17 +201,17 @@ const QList<int>& BrowseTableModel::searchColumns() const {
     return m_searchColumns;
 }
 
-void BrowseTableModel::setPath(mixxx::FileAccess path) {
+void BrowseTableModel::setPath(mixxx::FileAccess path, bool recursive) {
     VERIFY_OR_DEBUG_ASSERT(m_pBrowseThread) {
         return;
     }
 
     if (path.info().hasLocation() && path.info().isDir()) {
         m_currentDirectory = path.info().location();
-        m_pBrowseThread->executePopulation(std::move(path), this);
+        m_pBrowseThread->executePopulation(std::move(path), this, recursive);
     } else {
         m_currentDirectory = {};
-        m_pBrowseThread->executePopulation({}, this);
+        m_pBrowseThread->executePopulation({}, this, recursive);
     }
 }
 

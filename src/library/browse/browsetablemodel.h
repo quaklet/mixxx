@@ -54,7 +54,7 @@ class BrowseTableModel final : public QStandardItemModel, public virtual TrackMo
     virtual ~BrowseTableModel();
 
     // initiate table population, store path
-    void setPath(mixxx::FileAccess path);
+    void setPath(mixxx::FileAccess path, bool recursive);
 
     /// Stop the BrowseThread, potentially still running and population
     /// the model, by setting an empty path in order to avoid its update

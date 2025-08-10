@@ -93,6 +93,12 @@ BrowseFeature::BrowseFeature(
             this,
             &BrowseFeature::slotRefreshDirectoryTree);
 
+    m_pScanSubdirsAction = new QAction(tr("Scan sub-directories"), this);
+    connect(m_pScanSubdirsAction,
+            &QAction::triggered,
+            this,
+            &BrowseFeature::slotScanSubdirectories);
+
     m_proxyModel.setFilterCaseSensitivity(Qt::CaseInsensitive);
     m_proxyModel.setSortCaseSensitivity(Qt::CaseInsensitive);
     // BrowseThread sets the Qt::UserRole of every QStandardItem to the sort key
@@ -262,6 +268,21 @@ void BrowseFeature::slotRefreshDirectoryTree() {
     onLazyChildExpandation(m_lastRightClickedIndex);
 }
 
+void BrowseFeature::slotScanSubdirectories() {
+    if (!m_lastRightClickedIndex.isValid()) {
+        return;
+    }
+
+    const QString path = getLastRightClickedPath();
+    if (path.isEmpty()) {
+        return;
+    }
+
+    m_scanRecursive = true;
+    selectAndActivate(m_lastRightClickedIndex);
+    m_scanRecursive = false;
+}
+
 TreeItemModel* BrowseFeature::sidebarModel() const {
     return m_pSidebarModel;
 }
@@ -305,7 +326,7 @@ void BrowseFeature::activateChild(const QModelIndex& index) {
     if (path == QUICK_LINK_NODE || path == DEVICE_NODE) {
         emit saveModelState();
         // Clear the tracks view
-        m_browseModel.setPath({});
+        m_browseModel.setPath({}, false);
     } else {
         // Open a security token for this path and if we do not have access, ask
         // for it.
@@ -321,7 +342,7 @@ void BrowseFeature::activateChild(const QModelIndex& index) {
             }
         }
         emit saveModelState();
-        m_browseModel.setPath(std::move(dirAccess));
+        m_browseModel.setPath(std::move(dirAccess), m_scanRecursive);
     }
     emit showTrackModel(&m_proxyModel);
     // Search is restored in Library::slotShowTrackModel, disable it where it's useless
@@ -361,6 +382,7 @@ void BrowseFeature::onRightClickChild(const QPoint& globalPos, const QModelIndex
     // disable this action.
     menu.addAction(m_pAddtoLibraryAction);
     menu.addAction(m_pRefreshDirTreeAction);
+    menu.addAction(m_pScanSubdirsAction);
     menu.exec(globalPos);
 }
 
