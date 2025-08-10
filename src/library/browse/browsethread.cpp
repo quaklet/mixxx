@@ -137,7 +137,8 @@ void BrowseThread::populateModel() {
 
     QDirIterator fileIt(thisPath.info().location(),
             nameFilters,
-            QDir::Files | QDir::NoDotAndDotDot);
+            QDir::Files | QDir::NoDotAndDotDot,
+            QDirIterator::Subdirectories);
 
     // remove all rows
     // This is a blocking operation
