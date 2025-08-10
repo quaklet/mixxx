@@ -215,6 +215,10 @@ void BrowseTableModel::setPath(mixxx::FileAccess path, bool recursive) {
     }
 }
 
+QString BrowseTableModel::getPath() {
+    return m_currentDirectory;
+}
+
 TrackPointer BrowseTableModel::getTrack(const QModelIndex& index) const {
     return getTrackByRef(TrackRef::fromFilePath(getTrackLocation(index)));
 }

@@ -342,6 +342,11 @@ void BrowseFeature::activateChild(const QModelIndex& index) {
             }
         }
         emit saveModelState();
+        if (path == m_browseModel.getPath() && !m_scanRecursive) {
+            // Don't reload the plain file list if the path didn't change.
+            // This usually happens if a user clicks on the same entry again by mistake.
+            return;
+        }
         m_browseModel.setPath(std::move(dirAccess), m_scanRecursive);
     }
     emit showTrackModel(&m_proxyModel);
