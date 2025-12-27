@@ -4942,6 +4942,9 @@ if(MAD)
   target_sources(mixxx-lib PRIVATE src/sources/soundsourcemp3.cpp)
   target_compile_definitions(mixxx-lib PUBLIC __MAD__)
   target_link_libraries(mixxx-lib PRIVATE MAD::MAD ID3Tag::ID3Tag)
+  if(BUILD_TESTING)
+    target_link_libraries(mixxx-test PRIVATE MAD::MAD ID3Tag::ID3Tag)
+  endif()
 endif()
 
 # Media Foundation AAC Decoder Plugin
